@@ -1,19 +1,21 @@
 package com.example.coolscreen
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var toggleButton: Button
-    
-    // Используем SharedPreferences, чтобы помнить состояние после перезапуска
     private val prefs by lazy { getSharedPreferences("CoolScreenPrefs", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,15 +24,23 @@ class MainActivity : AppCompatActivity() {
 
         toggleButton = findViewById(R.id.btnToggle)
         
-        // Восстанавливаем состояние кнопки при запуске
+        // Восстанавливаем состояние кнопки
         val isRunning = prefs.getBoolean("is_running", false)
         updateButtonState(isRunning)
 
         toggleButton.setOnClickListener {
-            // Проверяем разрешение перед каждым переключением
+            // 1. Проверяем оверлей
             if (!Settings.canDrawOverlays(this)) {
                 requestOverlayPermission()
                 return@setOnClickListener
+            }
+            
+            // 2. Проверяем уведомления (для Android 13+)
+            if (Build.VERSION.SDK_INT >= 33) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+                    return@setOnClickListener
+                }
             }
 
             val currentState = prefs.getBoolean("is_running", false)
@@ -41,9 +51,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Если открыли первый раз и разрешения нет — просим сразу
+        // Авто-проверка при старте
+        checkPermissions()
+    }
+
+    private fun checkPermissions() {
         if (!Settings.canDrawOverlays(this)) {
             requestOverlayPermission()
+        }
+        // Запрос уведомлений сразу при старте (удобнее для пользователя)
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
         }
     }
 
@@ -63,7 +83,6 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
         }
         
-        // Сохраняем состояние "Включено"
         prefs.edit().putBoolean("is_running", true).apply()
         updateButtonState(true)
     }
@@ -72,7 +91,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, FilterService::class.java)
         stopService(intent)
         
-        // Сохраняем состояние "Выключено"
         prefs.edit().putBoolean("is_running", false).apply()
         updateButtonState(false)
     }
