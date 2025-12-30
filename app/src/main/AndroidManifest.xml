@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coolscreen">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Разрешение на рисование поверх других окон -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    
-    <!-- Обязательно для запуска Foreground Service (Android 9+) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    
-    <!-- Опционально: Разрешение на уведомления для Android 13+ (чтобы пользователь видел, что сервис работает) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:label="CoolScreen"
-        android:icon="@mipmap/ic_launcher"
-        android:allowBackup="true"
+        android:icon="@android:drawable/sym_def_app_icon"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -27,13 +20,6 @@
             </intent-filter>
         </activity>
 
-        <!-- 
-           Сервис-оверлей. 
-           Убрали несуществующий тип 'systemAlertWindow'.
-           Если targetSdk = 33, тип можно не указывать.
-           Если targetSdk = 34 (Android 14), нужно добавить android:foregroundServiceType="specialUse" 
-           и соответствующее разрешение.
-        -->
         <service
             android:name=".FilterService"
             android:exported="false"
