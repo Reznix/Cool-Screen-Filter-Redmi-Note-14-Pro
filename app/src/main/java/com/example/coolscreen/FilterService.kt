@@ -18,9 +18,25 @@ class FilterService : Service() {
     private lateinit var windowManager: WindowManager
     private var overlayView: View? = null
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Если сервис уже запущен, мы просто обновляем цвет
+        // Если intent null, используем дефолтный цвет
+        val color = intent?.getIntExtra("COLOR_VALUE", 0x060000FF) ?: 0x060000FF
         
+        // Если View еще нет - создаем
+        if (overlayView == null) {
+            setupOverlay(color)
+        } else {
+            // Если View уже есть - просто меняем цвет
+            overlayView?.setBackgroundColor(color)
+        }
+        
+        startForegroundServiceNotification()
+        
+        return START_STICKY
+    }
+
+    private fun startForegroundServiceNotification() {
         createNotificationChannel()
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("CoolScreen")
@@ -28,21 +44,18 @@ class FilterService : Service() {
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .build()
-            
+
         if (Build.VERSION.SDK_INT >= 34) {
             startForeground(101, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
             startForeground(101, notification)
         }
+    }
 
+    private fun setupOverlay(color: Int) {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
         overlayView = View(this)
-        
-        // ФИНАЛЬНЫЙ ЦВЕТ (Best Compromise)
-        // Alpha: 0x08 (~3%) - достаточно прозрачно
-        // Color: 0005FF (Почти чистый синий, минимум зеленого, чтобы не светились тени)
-        overlayView?.setBackgroundColor(0x080005FF.toInt())
+        overlayView?.setBackgroundColor(color)
 
         val params = WindowManager.LayoutParams().apply {
             type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -50,7 +63,6 @@ class FilterService : Service() {
             } else {
                 WindowManager.LayoutParams.TYPE_PHONE
             }
-            
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or 
@@ -67,17 +79,18 @@ class FilterService : Service() {
 
         try {
             windowManager.addView(overlayView, params)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        } catch (e: Exception) { e.printStackTrace() }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        // Логика перенесена в onStartCommand, чтобы реагировать на новые клики
     }
 
     override fun onDestroy() {
         super.onDestroy()
         if (overlayView != null) {
-            try {
-                windowManager.removeView(overlayView)
-            } catch (e: IllegalArgumentException) { }
+            try { windowManager.removeView(overlayView) } catch (e: Exception) {}
             overlayView = null
         }
     }
@@ -87,12 +100,9 @@ class FilterService : Service() {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID,
-                "CoolScreen Service",
-                NotificationManager.IMPORTANCE_MIN
+                CHANNEL_ID, "CoolScreen Service", NotificationManager.IMPORTANCE_MIN
             )
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
+            getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
         }
     }
 
