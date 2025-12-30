@@ -1,0 +1,45 @@
+plugins {
+id 'com.android.application'
+id 'org.jetbrains.kotlin.android'
+}
+
+android {
+compileSdk 33
+  defaultConfig {
+    applicationId "com.example.coolscreen"
+    minSdk 26
+    targetSdk 33
+    versionCode 1
+    versionName "1.0"
+    vectorDrawables.useSupportLibrary = true
+}
+
+buildTypes {
+    debug {
+        minifyEnabled false
+        debuggable true
+    }
+    release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+}
+
+composeOptions {
+    kotlinCompilerExtensionVersion "1.4.3"
+    // если не используете Jetpack Compose, можно убрать
+}
+
+buildFeatures {
+    viewBinding true
+    // revoke if not using compose
+}
+
+packagingOptions {
+    resources {
+        excludes += [
+            "/META-INF/AL2.0",
+            "/META-INF/LGPL2.1"
+        ]
+    }
+}
