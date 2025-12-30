@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.coolscreen">
-  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.coolscreen">
 
-<!-- Необходимы разрешения на работу сервиса и надлежащие службы -->
-<application
-    android:label="CoolScreen"
-    android:icon="@mipmap/ic_launcher"
-    android:allowBackup="true"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-    <activity
-        android:name=".MainActivity"
-        android:exported="true"
-        android:label="Cool Screen Control">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+    <!-- Разрешение на рисование поверх других окон -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    
+    <!-- Обязательно для запуска Foreground Service (Android 9+) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    
+    <!-- Опционально: Разрешение на уведомления для Android 13+ (чтобы пользователь видел, что сервис работает) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- Сервис-оверлей -->
-    <service
-        android:name=".FilterService"
-        android:exported="false"
-        android:foregroundServiceType="systemAlertWindow"
-        android:enabled="true" />
+    <application
+        android:label="CoolScreen"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-    <!-- При необходимости можно определить приемники/потребителей -->
-</application>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="Cool Screen Control">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 
+           Сервис-оверлей. 
+           Убрали несуществующий тип 'systemAlertWindow'.
+           Если targetSdk = 33, тип можно не указывать.
+           Если targetSdk = 34 (Android 14), нужно добавить android:foregroundServiceType="specialUse" 
+           и соответствующее разрешение.
+        -->
+        <service
+            android:name=".FilterService"
+            android:exported="false"
+            android:enabled="true" />
+
+    </application>
+
+</manifest>
