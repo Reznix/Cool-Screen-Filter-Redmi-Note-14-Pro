@@ -1,9 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
-  <Button
-    android:id="@+id/btnToggle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Включить"
-    android:layout_centerInParent="true" />
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выберите режим:"
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btnMode1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1. Мягкий (6%)"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnMode2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2. Средний (8%)"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnMode3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="3. Глубокий (Смесь)"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/btnOff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF5555"
+        android:text="ВЫКЛЮЧИТЬ"/>
+
+</LinearLayout>
