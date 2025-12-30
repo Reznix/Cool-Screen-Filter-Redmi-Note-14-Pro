@@ -19,16 +19,23 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    # ШАГ 1: Создаем Gradle Wrapper вручную нужной версии (8.2)
-    - name: Setup Gradle Wrapper
-      run: gradle wrapper --gradle-version 8.2
+    # ВМЕСТО запуска gradle wrapper, мы создаем его вручную
+    - name: Create Gradle Wrapper Manually
+      run: |
+        mkdir -p gradle/wrapper
+        # Качаем jar враппера
+        curl -L https://raw.githubusercontent.com/gradle/gradle/v8.2.0/gradle/wrapper/gradle-wrapper.jar -o gradle/wrapper/gradle-wrapper.jar
+        # Качаем properties
+        curl -L https://raw.githubusercontent.com/gradle/gradle/v8.2.0/gradle/wrapper/gradle-wrapper.properties -o gradle/wrapper/gradle-wrapper.properties
+        # Создаем скрипт gradlew
+        curl -L https://raw.githubusercontent.com/gradle/gradle/v8.2.0/gradlew -o gradlew
+        chmod +x gradlew
+        
+        # Обновляем версию в properties файле на точную
+        echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.2-bin.zip" > gradle/wrapper/gradle-wrapper.properties
 
-    # ШАГ 2: Даем права на исполнение только что созданному файлу
-    - name: Make gradlew executable
-      run: chmod +x gradlew
-
-    # ШАГ 3: Запускаем сборку через ./gradlew (он скачает Gradle 8.2)
     - name: Build with Gradle
+      # Теперь запускаем наш "ручной" враппер 8.2, который точно совместим с плагинами
       run: ./gradlew assembleDebug --no-daemon
 
     - name: Upload APK
