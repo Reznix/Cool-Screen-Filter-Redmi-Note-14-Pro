@@ -39,10 +39,10 @@ class FilterService : Service() {
 
         overlayView = View(this)
         
-        // ТЮНИНГ ЦВЕТА (Меньше серости в тенях)
-        // Alpha: 0x08 (~3%)
-        // Color: 4080FF (Более насыщенный синий, чтобы меньше поднимать яркость черного)
-        overlayView?.setBackgroundColor(0x084080FF.toInt())
+        // ФИНАЛЬНЫЙ ЦВЕТ (Best Compromise)
+        // Alpha: 0x08 (~3%) - достаточно прозрачно
+        // Color: 0005FF (Почти чистый синий, минимум зеленого, чтобы не светились тени)
+        overlayView?.setBackgroundColor(0x080005FF.toInt())
 
         val params = WindowManager.LayoutParams().apply {
             type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -77,9 +77,7 @@ class FilterService : Service() {
         if (overlayView != null) {
             try {
                 windowManager.removeView(overlayView)
-            } catch (e: IllegalArgumentException) {
-                // View уже был удален или не прикреплен - игнорируем
-            }
+            } catch (e: IllegalArgumentException) { }
             overlayView = null
         }
     }
