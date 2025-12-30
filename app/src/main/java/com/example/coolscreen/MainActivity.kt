@@ -1,7 +1,6 @@
 package com.example.coolscreen
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -15,51 +14,37 @@ import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var toggleButton: Button
-    private val prefs by lazy { getSharedPreferences("CoolScreenPrefs", Context.MODE_PRIVATE) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        toggleButton = findViewById(R.id.btnToggle)
-        
-        // Восстанавливаем состояние кнопки
-        val isRunning = prefs.getBoolean("is_running", false)
-        updateButtonState(isRunning)
-
-        toggleButton.setOnClickListener {
-            // 1. Проверяем оверлей
-            if (!Settings.canDrawOverlays(this)) {
-                requestOverlayPermission()
-                return@setOnClickListener
-            }
-            
-            // 2. Проверяем уведомления (для Android 13+)
-            if (Build.VERSION.SDK_INT >= 33) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
-                    return@setOnClickListener
-                }
-            }
-
-            val currentState = prefs.getBoolean("is_running", false)
-            if (currentState) {
-                stopOverlayService()
-            } else {
-                startOverlayService()
-            }
+        findViewById<Button>(R.id.btnMode1).setOnClickListener {
+            // Пресет 1: 0x060000FF (Мягкий)
+            startFilter(0x060000FF)
         }
 
-        // Авто-проверка при старте
+        findViewById<Button>(R.id.btnMode2).setOnClickListener {
+            // Пресет 2: 0x080000FF (Посильнее)
+            startFilter(0x080000FF.toInt())
+        }
+
+        findViewById<Button>(R.id.btnMode3).setOnClickListener {
+            // Пресет 3: 0x050010FF (Глубокий синий)
+            startFilter(0x050010FF)
+        }
+        
+        findViewById<Button>(R.id.btnOff).setOnClickListener {
+            stopFilter()
+        }
+
         checkPermissions()
     }
 
     private fun checkPermissions() {
         if (!Settings.canDrawOverlays(this)) {
-            requestOverlayPermission()
+            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+            startActivity(intent)
         }
-        // Запрос уведомлений сразу при старте (удобнее для пользователя)
         if (Build.VERSION.SDK_INT >= 33) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
@@ -67,35 +52,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestOverlayPermission() {
-        val intent = Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:$packageName")
-        )
-        startActivity(intent)
-    }
-
-    private fun startOverlayService() {
+    private fun startFilter(color: Int) {
+        if (!Settings.canDrawOverlays(this)) {
+            checkPermissions()
+            return
+        }
         val intent = Intent(this, FilterService::class.java)
+        intent.putExtra("COLOR_VALUE", color) // Передаем цвет в сервис
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent)
         } else {
             startService(intent)
         }
-        
-        prefs.edit().putBoolean("is_running", true).apply()
-        updateButtonState(true)
     }
 
-    private fun stopOverlayService() {
-        val intent = Intent(this, FilterService::class.java)
-        stopService(intent)
-        
-        prefs.edit().putBoolean("is_running", false).apply()
-        updateButtonState(false)
-    }
-
-    private fun updateButtonState(isRunning: Boolean) {
-        toggleButton.text = if (isRunning) "Выключить" else "Включить"
+    private fun stopFilter() {
+        stopService(Intent(this, FilterService::class.java))
     }
 }
