@@ -3,8 +3,6 @@ name: Android CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -21,11 +19,17 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    # Мы удалили шаг chmod, так как он не нужен без wrapper
+    # ШАГ 1: Создаем Gradle Wrapper вручную нужной версии (8.2)
+    - name: Setup Gradle Wrapper
+      run: gradle wrapper --gradle-version 8.2
 
+    # ШАГ 2: Даем права на исполнение только что созданному файлу
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+
+    # ШАГ 3: Запускаем сборку через ./gradlew (он скачает Gradle 8.2)
     - name: Build with Gradle
-      # Используем глобальный gradle вместо ./gradlew
-      run: gradle assembleDebug --no-daemon
+      run: ./gradlew assembleDebug --no-daemon
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
