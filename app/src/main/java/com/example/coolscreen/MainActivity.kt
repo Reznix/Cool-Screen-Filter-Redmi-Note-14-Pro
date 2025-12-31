@@ -28,24 +28,24 @@ class MainActivity : AppCompatActivity() {
             startFilter(0x0A040899.toInt()) 
         }
 
-        // 3. COOL 1: 0x0C042095
+        // 3. COOL 1: 0x200000FF
         findViewById<Button>(R.id.btnCool1).setOnClickListener { 
-            startFilter(0x0C042095.toInt()) 
+            startFilter(0x200000FF.toInt()) 
         }
 
-        // 4. COOL 2: 0x080050FF
+        // 4. COOL 2: 0x300000FF
         findViewById<Button>(R.id.btnCool2).setOnClickListener { 
-            startFilter(0x080050FF.toInt()) 
+            startFilter(0x300000FF.toInt()) 
         }
 
-        // 5. COOL 3: 0x090040FF
+        // 5. COOL 3: 0x200010FF
         findViewById<Button>(R.id.btnCool3).setOnClickListener { 
-            startFilter(0x090040FF.toInt()) 
+            startFilter(0x200010FF.toInt()) 
         }
 
-        // 6. COOL 4 (Дубль COOL 2 в запросе): 0x0A0050FF
+        // 6. COOL 4: 0x300010FF
         findViewById<Button>(R.id.btnCool4).setOnClickListener { 
-            startFilter(0x0A0050FF.toInt()) 
+            startFilter(0x300010FF.toInt()) 
         }
 
 
