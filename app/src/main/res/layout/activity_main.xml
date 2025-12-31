@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CoolScreen Lab"
+            android:text="CoolScreen Lab 2.0"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -24,126 +24,65 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Main Presets"
+            android:text="The Best Selection"
             android:textColor="#AAAAAA"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="12dp"/>
 
-        <GridLayout
+        <!-- BASE: 0x060000FF -->
+        <Button
+            android:id="@+id/btnBase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="2">
+            android:text="BASE (Original)"
+            android:layout_marginBottom="8dp"/>
 
-            <Button
-                android:id="@+id/btnBase"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="БАЗА"
-                android:layout_margin="4dp"/>
-
-            <Button
-                android:id="@+id/btnCool"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="COOL"
-                android:layout_margin="4dp"/>
-
-            <Button
-                android:id="@+id/btnCoolPlus"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="COOL+"
-                android:layout_margin="4dp"/>
-
-            <Button
-                android:id="@+id/btnCoolG"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="COOL-G"
-                android:layout_margin="4dp"/>
-        </GridLayout>
+        <!-- FAVORITE: 0x0A040899 -->
+        <Button
+            android:id="@+id/btnFavorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FAVORITE (Smart Mix)"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Experimental"
+            android:text="Math Upgrades (Same Shadows)"
             android:textColor="#AAAAAA"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="8dp"/>
 
-        <GridLayout
+        <!-- UPGRADE 1: 0x0C030680 -->
+        <Button
+            android:id="@+id/btnUpgrade1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2">
+            android:text="UPGRADE 1 (More Cold)"
+            android:layout_marginBottom="8dp"/>
 
-            <Button
-                android:id="@+id/btnExp1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="EXP 1"
-                android:layout_margin="4dp"/>
+        <!-- UPGRADE 2: 0x0E03066E -->
+        <Button
+            android:id="@+id/btnUpgrade2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPGRADE 2 (Max Cold)"
+            android:layout_marginBottom="8dp"/>
 
-            <Button
-                android:id="@+id/btnExp2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="EXP 2"
-                android:layout_margin="4dp"/>
-             
-            <Button
-                android:id="@+id/btnExp3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="EXP 3"
-                android:layout_margin="4dp"/>
-
-            <Button
-                android:id="@+id/btnExp4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="EXP 4"
-                android:layout_margin="4dp"/>
-
-            <Button
-                android:id="@+id/btnExp5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="EXP 5"
-                android:layout_margin="4dp"/>
-
-            <Button
-                android:id="@+id/btnExp6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="EXP 6"
-                android:layout_margin="4dp"/>
-
-            <Button
-                android:id="@+id/btnExp7"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="EXP 7"
-                android:layout_margin="4dp"/>
-
-        </GridLayout>
+        <!-- GREEN TWEAK: 0x0C030880 -->
+        <Button
+            android:id="@+id/btnGreenTweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GREEN TWEAK (Less Blue Shadows)"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/btnOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
             android:backgroundTint="#FF4444"
             android:text="OFF"
             android:textStyle="bold"/>
