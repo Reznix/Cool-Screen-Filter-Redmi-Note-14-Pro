@@ -18,32 +18,34 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 1. BASE: 0x060000FF (Классика)
+        // 1. BASE: 0x060000FF
         findViewById<Button>(R.id.btnBase).setOnClickListener { 
             startFilter(0x060000FF) 
         }
 
-        // 2. FAVORITE: 0x0A040899 (Тот самый удачный компромисс)
+        // 2. FAVORITE: 0x0A040899
         findViewById<Button>(R.id.btnFavorite).setOnClickListener { 
             startFilter(0x0A040899.toInt()) 
         }
 
-        // 3. UPGRADE 1: 0x0C030680 (Alpha 12, Blue 128)
-        // Тени как у FAVORITE, но холоднее
-        findViewById<Button>(R.id.btnUpgrade1).setOnClickListener { 
-            startFilter(0x0C030680.toInt()) 
+        // 3. COOL 1: 0x0C042095
+        findViewById<Button>(R.id.btnCool1).setOnClickListener { 
+            startFilter(0x0C042095.toInt()) 
         }
 
-        // 4. UPGRADE 2: 0x0E03066E (Alpha 14, Blue 110)
-        // Еще холоднее, риск "вуали"
-        findViewById<Button>(R.id.btnUpgrade2).setOnClickListener { 
-            startFilter(0x0E03066E.toInt()) 
+        // 4. COOL 2: 0x080050FF
+        findViewById<Button>(R.id.btnCool2).setOnClickListener { 
+            startFilter(0x080050FF.toInt()) 
         }
 
-        // 5. GREEN TWEAK: 0x0C030880 (Alpha 12, G 8, B 128)
-        // Чуть больше зелени в тенях
-        findViewById<Button>(R.id.btnGreenTweak).setOnClickListener { 
-            startFilter(0x0C030880.toInt()) 
+        // 5. COOL 3: 0x090040FF
+        findViewById<Button>(R.id.btnCool3).setOnClickListener { 
+            startFilter(0x090040FF.toInt()) 
+        }
+
+        // 6. COOL 4 (Дубль COOL 2 в запросе): 0x0A0050FF
+        findViewById<Button>(R.id.btnCool4).setOnClickListener { 
+            startFilter(0x0A0050FF.toInt()) 
         }
 
 
