@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         // V2: фаворит был (0x0A040899)
         findViewById<Button>(R.id.btnV2).setOnClickListener { 
-            startFilter(0x0C020580.toInt()) 
+            startFilter(0x0D010375.toInt()) 
         }
 
         // ВЫКЛЮЧИТЬ
