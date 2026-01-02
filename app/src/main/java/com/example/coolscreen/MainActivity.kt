@@ -17,14 +17,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // V1: base был (0x060000FF)
-        findViewById<Button>(R.id.btnV1).setOnClickListener { 
-            startFilter(0x0B03068B) 
-        }
-
+       
         // V2: фаворит был (0x0A040899)
-        findViewById<Button>(R.id.btnV2).setOnClickListener { 
+        findViewById<Button>(R.id.btnOn).setOnClickListener { 
             startFilter(0x0D010375.toInt()) 
         }
 
